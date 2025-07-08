@@ -42,6 +42,17 @@ function applyCustomSort() {
     1) compareFunction(a, b) > 0 --> sort a after b, e.g. [b, a]
     2) compareFunction(a, b) < 0 --> sort a before b, e.g. [a, b]
     3) compareFunction(a, b) === 0 --> keep original order of a and b
+
+    however, consider the following observations for the second and third cases:
+
+    2) if return value < 0, sort a before b, but we can see that a already comes
+    before b in the array (a is this[j] and b is this[j + 1]), so there is
+    nothing to be swapped, so we continue to the next loop iteration as we do
+    not need to check for this case if we are not going to do anything
+
+    3) if return value === 0, keep original order of a and b, which means that
+    there is nothing to be swapped, so we continue to the next loop iteration,
+    as we do not need to check for this case if we are not going to do anything
     */
     if (compareFunction !== undefined) {
       for (let i = 0; i < this.length - 1; i++) {
@@ -52,24 +63,6 @@ function applyCustomSort() {
 
             this[j] = this[j + 1]; // store b in @ of a
             this[j + 1] = temp; // store a in @ of b
-          }
-
-          /*
-          if return value < 0, sort a before b, but we can see that a already
-          comes before b in the array, so there is nothing to be swapped, so we
-          continue to the next loop iteration
-          */
-          if (compareFunction(this[j], this[j + 1]) < 0) {
-            continue;
-          }
-
-          /*
-          if return value === 0, keep original order of a and b, which means
-          that there is nothing to be swapped, so we continue to the next loop
-          iteration
-          */
-          if (compareFunction(this[j], this[j + 1]) === 0) {
-            continue;
           }
         }
       }
